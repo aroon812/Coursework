@@ -1,0 +1,54 @@
+studentID,studentName,class,gpa,major,CourseNum,deptID,CourseName,Location,meetDay,meetTime,deptName,building
+-----------------------------------------------------------------------------------------------------------------
+1001,Lia,Junior,3.6,,,,,,,,,
+1282,Kelly,Freshman,2.5,,122,BUS,Economics,WY 30,MW,13:30,School of Business,McIntyre Hall
+1025,John,Senior,3.6,ENGL,101,PHYS,How Things Move,HH 191,MWF,10:00,Department of Physics,Harned Hall
+,,,,,,HIST,,,,,Department of History,Wyatt Hall
+1247,Alexis,SR,3.9,ENG,320,MATH,Discrete Mathematics,TH 307,F,11:00,Department of Mathematics,Tower of Babel
+1101,Haley,SR,4.0,BUS;MATH,120,MATH,Algebra,MH 10,MW,12:00,Department of Mathematics,Tower of Babel
+1247,Alexis,Senior,3.9,ENG,351,CSCI,Database Systems,TH 19,MW,12:00,School of Computer Science,Thompson Hall
+1304,Jordan,SR,2.9,MATH,101,PHYS,How Things Move,HH 191,MWF,10:00,Department of Physics,Harned Hall
+1101,Haley,Senior,4.0,BUS;MATH,230,MATH,Linear Algebra,HH 308,TR,15:00,Department of Mathematics,Tower of Babel
+1709,Cassandra,Junior,2.8,CSCI;SOAN,102,SOAN,Sociology 2,WY 205,MTWRF,09:00,Department of Anthropology,Wyatt Hall
+1101,Haley,Senior,4.0,BUS;MATH,401,PHYS,Quantum Mechanics,HH 372,TR,09:00,Department of Physics,Harned Hall
+1225,Sarah,Freshman,2.9,,101,ENGL,How to Read,WY 100,MWF,13:00,Department of English,Wyatt Hall
+1247,Alexis,Senior,3.9,ENGL,453,CSCI,Capstone in Computer Science,TH 398,MWF,16:00,School of Computer Science,Thompson Hall
+1911,David,Senior,3.2,CSCI;ENGL,453,CSCI,Capstone in Computer Science,TH 398,MWF,16:00,School of Computer Science,Thompson Hall
+1025,John,Senior,3.6,ENGL,520,ENGL,Shakespeare Was Da Bomb,HH 20,TR,13:00,Department of English,Wyatt Hall
+1282,Kelly,Freshman,2.5,,351,CSCI,Database Systems,TH 19,MW,12:00,School of Computer Science,Thompson Hall
+1247,Alexis,SR,3.9,ENGL,520,CSCI,High Performance Computing,WY 307,TR,15:00,School of Computer Science,Thompson Hall
+,,,,,330,MATH,Trigonometry,WEY 113,TR,08:30,,
+1510,Jordan,Freshman,3.0,MATH;PHYS,351,CSCI,Database Systems,TH 19,MW,12:00,School of Computer Science,Thompson Hall
+1247,Alexis,SR,3.9,ENGL,101,ENGL,How to Read,WY 100,MWF,13:00,Department of English,Wyatt Hall
+1025,John,Senior,3.6,ENGL,351,BUS,Finance,WY 29,TR,12:00,School of Business,McIntyre Hall
+,,,,,122,CSCI,How to Code Good,TH 19,TR,12:00,,
+1661,Logan,Freshman,0.5,CSCI,351,CSCI,Database Systems,TH 19,MW,12:00,School of Computer Science,Thompson Hall
+1304,Jordan,Senior,2.9,MATH,102,ENGL,How to Write,WY 100,MWF,14:00,Department of English,Wyatt Hall
+1316,Austin,Sophomore,2.1,CSCI,122,BUS,Economics,WY 30,MW,13:30,School of Business,McIntyre Hall
+1025,John,SR,3.6,ENGL,351,CSCI,Database Systems,TH 19,MW,12:00,School of Computer Science,Thompson Hall
+1316,Austin,Sophomore,2.1,CSCI,460,CSCI,Operating Systems,TH 8,MW,14:00,School of Computer Science,Thompson Hall
+1381,Tiffany,JR,4.0,CSCI,,,,,,,,
+1468,Kris,Sophomore,1.0,ENGL,,,,,,,,
+1487,Erin,Sophomore,3.9,ENGL,,,,,,,,
+1501,Jessica,Freshman,3.3,CSCI,351,CSCI,Database Systems,TH 19,MW,12:00,School of Computer Science,Thompson Hall
+1510,Jordan,Freshman,3.0,MATH;PHYS,122,BUS,Economics,WY 30,MW,13:30,School of Business,McIntyre Hall
+1934,Kyle,JR,2.1,BUS;ENGL,453,CSCI,Capstone in Computer Science,TH 398,MWF,16:00,School of Computer Science,Thompson Hall
+1782,Andrew,Sophomore,3.7,BUS,230,MATH,Linear Algebra,HH 308,TR,15:00,Department of Mathematics,Tower of Babel
+1510,Jordan,Freshman,3.0,MATH;PHYS,351,BUS,Finance,WY 29,TR,12:00,School of Business,McIntyre Hall
+1629,Brad,Senior,1.6,,,,,,,,,
+1640,Adam,Senior,3.6,,,,,,,,,
+1304,Jordan,Senior,2.9,MATH,351,BUS,Finance,WY 29,TR,12:00,School of Business,McIntyre Hall
+1304,Jordan,SR,2.9,MATH,520,ENGL,Shakespeare Was Da Bomb,HH 20,TR,13:00,Department of English,Wyatt Hall
+1641,Brittany,SR,2.7,ENG,,,,,,,,
+1661,Logan,Freshman,0.5,CSCI,351,BUS,Finance,WY 29,TR,12:00,School of Business,McIntyre Hall
+1025,John,Senior,3.6,ENG,520,CSCI,High Performance Computing,WY 307,TR,15:00,School of Computer Science,Thompson Hall
+1689,Gabriel,SR,2.4,BUS,520,ENGL,Shakespeare Was Da Bomb,HH 20,TR,13:00,Department of English,Wyatt Hall
+1661,Logan,Freshman,0.5,CSCI,460,CSCI,Operating Systems,TH 8,MW,14:00,School of Computer Science,Thompson Hall
+,,,,,101,SOAN,Sociology 1,WY 105,MWF,08:00,,
+1782,Andrew,Sophomore,3.7,BUS,520,ENGL,Shakespeare Was Da Bomb,HH 20,TR,13:00,Department of English,Wyatt Hall
+1911,David,Senior,3.2,CSCI;ENGL,230,MATH,Linear Algebra,HH 308,TR,15:00,Department of Mathematics,Tower of Babel
+1689,Gabriel,Senior,2.4,BUS,460,CSCI,Operating Systems,TH 8,MW,14:00,School of Computer Science,Thompson Hall
+1661,Logan,Freshman,0.5,CSCI,460,MATH,Calculus 3,WEY 102,TR,12:30,Department of Mathematics,Tower of Babel
+1911,David,SR,3.2,CSCI;ENGL,351,CSCI,Database Systems,TH 19,MW,12:00,School of Computer Science,Thompson Hall
+1934,Kyle,Junior,2.1,BUS;ENGL,351,CSCI,Database Systems,TH 19,MW,12:00,School of Computer Science,Thompson Hall
+1934,Kyle,Junior,2.1,BUS;ENGL,520,ENGL,Shakespeare Was Da Bomb,HH 20,TR,13:00,Department of English,Wyatt Hall
