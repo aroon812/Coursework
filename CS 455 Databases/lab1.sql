@@ -11,9 +11,12 @@
 --lastName LIKE 'M%' and firstName LIKE 'P%' 
 --order by lastName
 
-select productCode from orderdetails NATURAL JOIN
+--slightly different
+select productName from products NATURAL JOIN(
+(select productCode from orderdetails NATURAL JOIN
 (select orderNumber from customers NATURAL JOIN orders 
-where customerName LIKE "Mini Wheels Co." )
+where customerName LIKE "Mini Wheels Co." )))
+order by productLine
  
 
 
