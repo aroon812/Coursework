@@ -6,7 +6,7 @@ drop table if exists Student;
 drop table if exists Course;
 drop table if exists Enroll;
 drop table if exists Dept;
-
+drop table if exists Major;
 -- Create the schema for your tables below
 CREATE TABLE Student(
     studentID INTEGER UNIQUE,
@@ -39,7 +39,7 @@ CREATE TABLE Course(
 );
 
 CREATE TABLE Dept(
-    deptID TEXT CHECK(length <= 4),
+    deptID TEXT CHECK(length(deptID) <= 4),
     deptName TEXT UNIQUE CHECK(NOT NULL),
     building TEXT,
     PRIMARY KEY (deptID)
