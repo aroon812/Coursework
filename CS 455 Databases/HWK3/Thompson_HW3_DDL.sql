@@ -26,13 +26,13 @@ CREATE TABLE Major(
 );
 
 CREATE TABLE Course(
-    courseNum INTEGER,
+    CourseNum INTEGER,
     deptID TEXT,
-    courseName TEXT,
-    location TEXT,
+    CourseName TEXT,
+    Location TEXT,
     meetDay TEXT,
     meetTime TEXT CHECK(meetTime >= '07:00' AND meetTime <= '17:00'),
-    PRIMARY KEY (deptID, courseNum),
+    PRIMARY KEY (deptID, CourseNum),
     FOREIGN KEY (deptID) REFERENCES Dept(deptID)
         ON UPDATE CASCADE
         ON DELETE CASCADE
@@ -40,16 +40,16 @@ CREATE TABLE Course(
 
 CREATE TABLE Dept(
     deptID TEXT CHECK(length <= 4),
-    name TEXT UNIQUE CHECK(NOT NULL),
+    deptName TEXT UNIQUE CHECK(NOT NULL),
     building TEXT,
     PRIMARY KEY (deptID)
 );
 
 CREATE TABLE Enroll(
-    courseNum INTEGER,
+    CourseNum INTEGER,
     deptID TEXT,
     studentID INTEGER,
-    PRIMARY KEY (courseNum, deptID, studentID),
+    PRIMARY KEY (CourseNum, deptID, studentID),
     FOREIGN KEY (deptID) REFERENCES Dept(deptID)
         ON UPDATE CASCADE
         ON DELETE CASCADE
