@@ -7,6 +7,7 @@ drop table if exists Course;
 drop table if exists Enroll;
 drop table if exists Dept;
 drop table if exists Major;
+
 -- Create the schema for your tables below
 CREATE TABLE Student(
     studentID INTEGER UNIQUE,

@@ -10,7 +10,7 @@ def deleteLastComma(insertion):
 
 data = pandas.read_csv('shmeeplesoft.raw.txt')
 data.drop([0], inplace=True)
-primaryKeys = [('Student', ['studentID', 'studentName', 'class', 'gpa']),
+attributeTuples = [('Student', ['studentID', 'studentName', 'class', 'gpa']),
                ('Dept', ['deptID', 'deptName', 'building']),
                ('Major', ['studentID', 'major']),
                ('Course', ['CourseNum', 'deptID', 'CourseName', 'Location', 'meetDay', 'meetTime']),
@@ -24,7 +24,7 @@ data.replace(to_replace='FR', value='Freshman', inplace=True)
 itemNum = len(data.index)
 
 for i in range(0, itemNum):
-    for (relation, attributes) in primaryKeys:
+    for (relation, attributes) in attributeTuples:
         attributesFilled = True
         insertion = '('
         for attribute in attributes:       
