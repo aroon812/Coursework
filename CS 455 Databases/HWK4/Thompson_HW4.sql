@@ -16,7 +16,7 @@ NATURAL JOIN Enroll);
 
 -- Q3: Finds the average GPA for each of the class ranks (freshman, sophomore, junior, senior).
 -- It projects each class and the average gpa of the associated class.
-select class, avg(gpa) as 'ClassGPA'Get a list of all students who are still undeclared
+select class, avg(gpa) as 'ClassGPA'
 from Student 
 group by class;
 
@@ -31,3 +31,10 @@ order by class, studentName;
 select studentID, studentName 
 from Student where studentID not in (select studentID from Major)
 order by studentID;
+
+--need to still get depts with 0 enrollments
+-- Q6: Lists all departments in the college and their respective student enrollments.
+select deptName, count(deptID) as 'enrolled'
+from Enroll natural join (select deptID, deptName from Dept)
+group by deptID
+order by enrolled desc;
