@@ -57,3 +57,30 @@ create TABLE Enroll(
                 ON UPDATE CASCADE
                 ON DELETE CASCADE
 );
+create TABLE student_log(
+        activity TEXT CHECK(activity = 'insert' or activity = 'deletion' or activity = 'update'),
+        studentName TEXT,
+        event TEXT
+        PRIMARY KEY(activity, studentName, event)
+);
+
+create TRIGGER studentInsert
+after insert on Student
+begin
+        insert into  student_log
+        values ('insert', NEW.studentName,'studentID: ' || NEW.StudentID || ' class: ' || NEW.class || ' gpa: ' || NEW.gpa);
+end;
+
+create TRIGGER studentDelete
+after delete on Student
+begin
+        insert into  student_log
+        values ('delete', OLD.studentName,'studentID: ' || OLD.StudentID || ' class: ' || OLD.class || ' gpa: ' || OLD.gpa);
+end;
+
+create TRIGGER studentUpdate
+after update on Student
+begin
+        insert into  student_log
+        values ('update', OLD.studentName,'studentID: ' || OLD.StudentID || '=>' || NEW.StudentID || ' class: ' || OLD.class || '=>' || NEW.class || ' gpa: ' || OLD.gpa || '=>' || NEW.gpa);
+end;
