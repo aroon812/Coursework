@@ -10,7 +10,7 @@ import java.util.Scanner;
  */
 public class JoinEngine {
 	public static void main(String[] args) {
-		File data = new File("src/data");
+		File data = new File("data");
 		Hashtable<String, Relation> relations = new Hashtable<String, Relation>();
 
 		for (final File fileEntry : data.listFiles()) {
@@ -23,16 +23,20 @@ public class JoinEngine {
 			}
 		}
 		
-		Scanner scanner = new Scanner(System.in);
+		
 		Object[] relationNames = relations.keySet().toArray();
-			
+		Scanner scanner1 = new Scanner(System.in);
+		Scanner scanner2 = new Scanner(System.in);
+
+		while(true){
+		System.out.println("Press CTRL+C to exit.");
 		System.out.println("Availiable Relations: ");
 		for (int i = 0; i < relationNames.length; i++) {
 			System.out.print(relationNames[i] + " ");
 		}
 		System.out.println();
 		System.out.print("Your selection (separated by space): ");
-		String relationSelection = scanner.nextLine();
+		String relationSelection = scanner1.nextLine();
 		String[] chosenRelations = relationSelection.split(" ");
 		
 		for (int i = 0; i < chosenRelations.length; i++) {
@@ -58,8 +62,8 @@ public class JoinEngine {
 		System.out.println("3. Sort-Merge Join");
 		double time1;
 		double time2;
-		int algorithmChoice = scanner.nextInt();
-		scanner.close();
+		int algorithmChoice = scanner2.nextInt();
+		
 		if (algorithmChoice == 1) {
 			time1 = System.nanoTime();
 			Relation r = nestedLoopJoin(rel1, rel2);
@@ -103,6 +107,8 @@ public class JoinEngine {
 			System.out.println("Time: " + ((time2-time1)/1000000) + " ms");
 			System.out.println("The resulting relation has " + r.size() + " rows");
 		}
+	
+	}
 	}
 	
 	/**
@@ -189,14 +195,15 @@ public class JoinEngine {
 		int j = 0;
 		while (i < rel1.size() && j < rel2.size()) {
 			if (rel1.getTuple(i).getAttributeValue(rel1.getAttributeLocation(attribute)).equals(rel2.getTuple(j).getAttributeValue(rel2.getAttributeLocation(attribute)))) {
-				while ((rel1.getTuple(i).getAttributeValue(rel1.getAttributeLocation(attribute)).equals(rel2.getTuple(j).getAttributeValue(rel2.getAttributeLocation(attribute)))) && (i < rel1.size())) {
+				while ((i < rel1.size()) && (rel1.getTuple(i).getAttributeValue(rel1.getAttributeLocation(attribute)).equals(rel2.getTuple(j).getAttributeValue(rel2.getAttributeLocation(attribute))))) {
 					int k = j;
-	
+					
 					while ((k < rel2.size()) && (rel1.getTuple(i).getAttributeValue(rel1.getAttributeLocation(attribute)).equals(rel2.getTuple(k).getAttributeValue(rel2.getAttributeLocation(attribute))))) {
 						Tuple addition = new Tuple(rel1.getTuple(i), rel2.getTuple(k), attribute);
 						result.addTuple(addition);
 						k++;
 					}
+					i++;
 				}
 			}
 			else if (rel1.getTuple(i).getAttributeValue(rel1.getAttributeLocation(attribute)).compareTo(rel2.getTuple(j).getAttributeValue(rel2.getAttributeLocation(attribute))) == -1) {

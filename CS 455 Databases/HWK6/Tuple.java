@@ -27,14 +27,15 @@ public class Tuple {
 	 * @param t2 The second tuple
 	 * @param commonAttribute The common attribute to join the tuples on.
 	 */
-	public Tuple(Tuple t1, Tuple t2, String commonAttribute) {
-		t2.removeAttribute(commonAttribute); 
+	public Tuple(Tuple t1, Tuple t2, String commonAttribute) { 
 		values = new ArrayList<Attribute>();
 		for (int i = 0; i < t1.numAttributes(); i++) {
 			values.add(t1.getAttribute(i));
 		}
 		for (int j = 0; j < t2.numAttributes(); j++) {
-			values.add(t2.getAttribute(j));
+			if (!t2.getAttribute(j).equals(commonAttribute)){
+				values.add(t2.getAttribute(j));
+			}	
 		}	
 	}
 	

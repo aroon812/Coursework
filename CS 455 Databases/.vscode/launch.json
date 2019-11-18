@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - JoinEngine",
+            "request": "launch",
+            "mainClass": "JoinEngine",
+            "projectName": "Thompson-hwk6"
+        }
+    ]
+}
