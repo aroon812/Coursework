@@ -7,7 +7,9 @@ import java.util.Comparator;
  */
 public class SortByAttribute implements Comparator<Tuple> {
 	String attribute;
-	public SortByAttribute(String attribute) {
+	Relation r;
+	public SortByAttribute(Relation r ,String attribute) {
+		this.r = r;
 		this.attribute = attribute;
 	}
 	
@@ -16,7 +18,7 @@ public class SortByAttribute implements Comparator<Tuple> {
 	 * Compares two tuples so a relation can be sorted.
 	 */
 	public int compare(Tuple arg0, Tuple arg1) {
-		return arg0.getAttributeValue(attribute).compareToIgnoreCase(arg1.getAttributeValue(attribute));
+		return arg0.getAttributeValue(r.getAttributeLocation(attribute)).compareToIgnoreCase(arg1.getAttributeValue(r.getAttributeLocation(attribute)));
 	}
 }
 

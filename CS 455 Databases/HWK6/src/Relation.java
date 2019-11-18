@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.Scanner;
 /**
  * Represents a relation in database management systems.
@@ -10,9 +11,10 @@ import java.util.Scanner;
  *
  */
 public class Relation {
-	String[] attributes;
+	public String[] attributes;
 	String sortedBy;
 	ArrayList<Tuple> tuples;
+	Hashtable<String, Integer> attributeLocations;
 	public String relationName;
 	
 	/**
@@ -27,6 +29,7 @@ public class Relation {
 		
 		try {
 			tuples = new ArrayList<Tuple>();
+			attributeLocations = new Hashtable<String, Integer>();
 			sc = new Scanner(file);
 			int line = 0;
 			String currentLine;
@@ -34,6 +37,10 @@ public class Relation {
 				currentLine = sc.nextLine();
 				if (line == 0) {
 					attributes = currentLine.replaceAll("#", "").split("\\|");
+					for (int i = 0; i < attributes.length; i++) {
+						attributeLocations.put(attributes[i], i);
+					}
+					
 				}
 				else if (line == 1 && currentLine.charAt(0) == '#') {
 					sortedBy = currentLine.replaceAll("#", "");
@@ -54,8 +61,50 @@ public class Relation {
 	/**
 	 * Create a new, empty relation.
 	 */
-	public Relation() {
+	public Relation(String[] atts1, String[] atts2, String commonAttribute) {
+		attributes = new String[(atts1.length+atts2.length)-1];
+		
+		int currentIndex = 0;
+		for (int i = 0; i < atts1.length; i++) {
+			attributes[currentIndex] = atts1[i];
+			currentIndex++;
+		}
+		for (int j = 0; j < atts2.length; j++) {
+			if(!atts2[j].equals(commonAttribute)) {
+				attributes[currentIndex] = atts2[j];
+				currentIndex++;
+			}
+		}
+		attributeLocations = new Hashtable<String, Integer>();
+		for (int i = 0; i < attributes.length; i++) {
+			attributeLocations.put(attributes[i], i);
+		}
 		tuples = new ArrayList<Tuple>();
+	}
+	
+	/**
+	 * Add a tuple to the relation.
+	 * @param t The tuple to be added.
+	 */
+	public void addTuple(Tuple t) {
+		tuples.add(t);
+	}
+	
+	/**
+	 * Get a Tuple at a specific index in a relation
+	 * @param i The index to retrieve the tuple from.
+	 * @return The tuple to be returned from the specified index.
+	 */
+	public Tuple getTuple(int i) {
+		return tuples.get(i);
+	}
+	
+	/**
+	 * Returns the number of tuples in a relation.
+	 * @return The number of tuples in a relation.
+	 */
+	public int size() {
+		return tuples.size();
 	}
 	
 	/**
@@ -63,22 +112,56 @@ public class Relation {
 	 * @param attribute The attribute to be sorted on.
 	 */
 	public void sort(String attribute) {
-		Collections.sort(tuples, new SortByAttribute(attribute));
+		Collections.sort(tuples, new SortByAttribute(this, attribute));
 	}
 	
 	/**
-	 * Print the relation. (for testing purposes only at the moment)
+	 * Find a common attribute in another relation.
+	 * @param r The other relation to compare.
+	 * @return The common attribute if one exists, or null if there are no common attributes.
 	 */
-	public void printRelation() {
+	public String commonAttribute(Relation r) {
 		for (int i = 0; i < attributes.length; i++) {
-			System.out.print(attributes[i] + " ");
+			for (int j = 0; j < r.attributes.length; j++) {
+				if (attributes[i].equals(r.attributes[j])) {
+					return attributes[i];
+				}
+			}
 		}
-		System.out.println();
+		return null;
+	}
+	
+	/**
+	 * Get the index of an attribute from the attribute name.
+	 * @param attributeName The name of the desired attribute.
+	 * @return The index of the desired attribute.
+	 */
+	public int getAttributeLocation(String attributeName) {
+		return attributeLocations.get(attributeName);
+	}
+	
+	/**
+	 * Print the relation. 
+	 */
+	public String toString() {
+		String strBuilder = "";
+		for (int i = 0; i < attributes.length; i++) {
+			strBuilder += attributes[i];
+			if (i != attributes.length-1) {
+				strBuilder += "|";
+			}
+			
+		}
+		strBuilder += "\n";
 		for (int i = 0; i < tuples.size(); i++) {
 			for (int j = 0; j < attributes.length; j++) {
-				System.out.print(tuples.get(i).getAttributeValue(attributes[j]) + " ");
+				strBuilder += tuples.get(i).getAttributeValue(getAttributeLocation(attributes[j]));
+				if (j != attributes.length-1) {
+					strBuilder += "|";
+				}
 			}
-			System.out.println();
+			strBuilder += "\n";
 		}
+		return strBuilder;
 	}
 }
