@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Scanner;
@@ -11,14 +10,14 @@ import java.util.Scanner;
  *
  */
 public class Relation {
-	public String[] attributes;
-	String sortedBy;
-	ArrayList<Tuple> tuples;
-	Hashtable<String, Integer> attributeLocations;
+	private String[] attributes;
+	private String sortedBy;
+	private ArrayList<Tuple> tuples;
+	private Hashtable<String, Integer> attributeLocations;
 	public String relationName;
 	
 	/**
-	 * 
+	 * Create a new relation.
 	 * @param relationName The name of the new relation
 	 * @param filePath The file path to the data file
 	 */
@@ -53,13 +52,12 @@ public class Relation {
 				line++;
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	/**
-	 * Create a new, empty relation.
+	 * Create a new, empty relation from a combination of attributes
 	 */
 	public Relation(String[] atts1, String[] atts2, String commonAttribute) {
 		attributes = new String[(atts1.length+atts2.length)-1];
@@ -80,6 +78,22 @@ public class Relation {
 			attributeLocations.put(attributes[i], i);
 		}
 		tuples = new ArrayList<Tuple>();
+	}
+	
+	/**
+	 * Get the attributes associated with the relation
+	 * @return an array of the relations attributes
+	 */
+	public String[] getAttributes() {
+		return attributes;
+	}
+	
+	/**
+	 * Returns the attribute on which the relation is sorted.
+	 * @return The attribute on which the relation is sorted, or null if the relation is not sorted.
+	 */
+	public String sortedBy() {
+		return sortedBy;
 	}
 	
 	/**
@@ -141,7 +155,8 @@ public class Relation {
 	}
 	
 	/**
-	 * Print the relation. 
+	 * Return the relation as a string. 
+	 * @return The relation as a string
 	 */
 	public String toString() {
 		String strBuilder = "";
@@ -150,7 +165,6 @@ public class Relation {
 			if (i != attributes.length-1) {
 				strBuilder += "|";
 			}
-			
 		}
 		strBuilder += "\n";
 		for (int i = 0; i < tuples.size(); i++) {

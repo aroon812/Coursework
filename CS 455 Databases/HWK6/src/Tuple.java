@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 /**
  * Creates A tuple that is stored in a relation based on a set of attributes.
@@ -7,7 +6,7 @@ import java.util.Hashtable;
  *
  */
 public class Tuple { 
-	ArrayList<Attribute> values; 
+	private ArrayList<Attribute> values; 
 	
 	/**
 	 * Create a new tuple

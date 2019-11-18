@@ -4,8 +4,8 @@
  *
  */
 public class Attribute {
-	String name;
-	String value;
+	private String name;
+	private String value;
 	
 	/**
 	 * Create new attribute
