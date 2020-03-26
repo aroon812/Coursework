@@ -1,0 +1,238 @@
+Package minijava;
+
+Helpers
+    digit = ['0'..'9'];
+    alpha = ['a'..'z'] | ['A'..'Z'];
+    tab = 9;
+    cr = 13;
+    lf = 10;
+    allchar = [' '..'~'];       // All digits, letters, punctuation
+    eol = cr | lf;
+    white = ' ' | tab | eol;
+    not_star = [allchar - '*'] | white;
+    not_star_not_slash = [allchar - ['*'+'/']] | white;
+    
+Tokens
+    plus = '+';
+    minus = '-';
+    star = '*';
+    not = '!';
+    and = '&&';
+    lt = '<';
+    asmt = '=';
+    equals = '==';
+    comma = ',';
+    semi = ';';
+    dot = '.';
+    lparen = '(';
+    rparen = ')';
+    lbracket = '[';
+    rbracket = ']';
+    lbrace = '{';
+    rbrace = '}';
+    boolean = 'boolean';
+    clas = 'class';
+    else = 'else';
+    extends = 'extends';
+    false = 'false';
+    if = 'if';
+    int = 'int';
+    length = 'length';
+    main = 'main';
+    new = 'new';
+    public = 'public';
+    return = 'return';
+    static = 'static';
+    string = 'String';
+    print = 'System.out.println';
+    this = 'this';
+    true = 'true';
+    void = 'void';
+    while = 'while';
+    id = (alpha) ((alpha) | (digit) | '_')*;
+    num = (['1'..'9']digit*) | '0';
+    whitespace = white+;
+    block_comment = '/*' not_star* ('*' (not_star_not_slash not_star*)?)* '*/';
+    eol_comment = '//' (allchar | tab)* eol;
+
+Ignored Tokens
+    whitespace,
+    block_comment,
+    eol_comment;
+    
+    
+Productions
+
+    program {-> program} = 
+        [main]:main_class [rest]:class_decl* 
+            {-> New program([main.class_decl, rest.class_decl])};
+    
+    main_class {-> class_decl} = 
+        clas [cname]:id [ol]:lbrace public static void main lparen
+        string array [arg]:id rparen lbrace [body]:stmt rbrace [or]:rbrace
+        {-> New class_decl.main(cname, body.stmt)};
+        
+    array = lbracket rbracket;
+    
+    class_decl =
+          {base_decl} base_decl         
+        | {extends_decl} extends_decl;
+    
+    base_decl {-> class_decl} = 
+        clas [name]:id lbrace [vars]:var_decl* [methods]:method_decl* rbrace    
+            {-> New class_decl.base(name, [vars.var_decl], [methods.method])};
+            
+    extends_decl = 
+        clas [name]:id extends [e]:id lbrace [v]:var_decl* [m]:method_decl* rbrace;
+    
+    var_decl = [kind]:type [name]:id semi;
+    
+    type = 
+          {int_array} int array 
+        | {bool} boolean        
+        | {int} int             
+        | {user} [clas]:id;
+        
+    // Note that only the main method in the main class is void -- all
+    // other methods must have return values, and therefore must also
+    // have return statements.  (They are only allowed at the *end*.)
+        
+    method_decl = 
+        public [ret]:type [name]:id lparen [args]:formal_list? rparen
+            lbrace [vars]:var_decl* [stmts]:stmt* return [e]:exp semi rbrace;
+        
+    formal_list {-> formal*} = 
+            [f]:formal [t]:formals_tail*    {-> [f.formal, t.formal]};
+    formals_tail {-> formal*} = 
+            comma [f]:formal                {-> [f.formal]};
+        
+    formal = [kind]:type [name]:id;
+    
+    stmt = 
+          {block}   [b]:block   
+        | {if}      if lparen [test]:exp rparen [t]:stmt else [f]:stmt
+        | {while}   while lparen [test]:exp rparen [body]:stmt
+        | {print}   print lparen [e]:exp rparen semi
+        | {asmt}    [name]:id asmt [e]:exp semi
+        | {array_asmt} [name]:id lbracket [idx]:exp rbracket asmt [val]:exp semi;
+
+            
+    block = lbrace [s]:stmt* rbrace;
+    
+/* Precedence:
+    [] .
+    !
+    *
+    +, -
+    <
+    &&
+    
+    Note that the ! operator doesn't need to precede something of 
+    higher precedence -- it can be the SAME precedence since it's
+    a unary operator.
+ */
+    
+    exp {-> exp} =
+            {and} [l]:exp and exp_lt        {-> New exp.and(l.exp, exp_lt.exp)}
+          | {e} exp_lt                      {-> exp_lt.exp};
+    exp_lt {-> exp} =
+            {lt} exp_lt lt exp_add          {-> New exp.lt(exp_lt.exp, exp_add.exp)}       
+          | {e} exp_add                     {-> exp_add.exp};
+    exp_add {-> exp} =
+            {plus} exp_add plus exp_times   {-> New exp.plus(exp_add.exp, exp_times.exp)}
+          | {minus} exp_add minus exp_times {-> New exp.minus(exp_add.exp, exp_times.exp)}
+          | {e} exp_times                   {-> exp_times.exp};
+    exp_times {-> exp} =
+            {times} exp_times star exp_not  {-> New exp.times(exp_times.exp, exp_not.exp)}
+          | {e} exp_not                     {-> exp_not.exp};
+    exp_not {-> exp} =
+            {not} not exp_not               {-> New exp.not(exp_not.exp)}
+          | {e} exp_ref                     {-> exp_ref.exp};
+    exp_ref {-> exp} =
+            {array_ref} [array]:exp_ref lbracket [idx]:exp rbracket {-> New exp.array_ref(array.exp, idx.exp)}
+          | {method} [m]:method                                     {-> New exp.method(m.method)}
+          | {e} exp_lit                                             {-> exp_lit.exp};
+    exp_lit {-> exp} =
+            {num}   num                                 {-> num.exp}         
+          | {id}    id                                  {-> id.exp}                     
+          | {true}  true                                {-> true.exp}
+          | {false} false                               {-> false.exp}
+          | {this}  this                                {-> this.exp}
+          | {alloc} new int lbracket [e]:exp rbracket   {-> exp.exp}
+          | {new}   new id lparen rparen                {-> new.exp}
+          | {bind}  lparen [e]:exp rparen               {-> exp.exp};
+
+    
+    method {-> method} =   
+            {length} exp_ref dot length     
+          | {other} exp_ref dot id lparen [el]:exp_list? rparen;
+    
+              
+    exp_list = [e]:exp [t]:exp_tail*;
+    exp_tail = comma [e]:exp;
+    
+
+Abstract Syntax Tree
+
+    // A program is a list of class declarations
+
+    program = class_decl*;
+    
+    // Three flavors of class declarations.  All we need to know about
+    // the main class is its name and the stmt in main's body.  For the
+    // others, we need their name, a list of their var_decls, and a list
+    // of method declarations.  (For a subclass we need to know who it
+    // extends as well.)
+    
+    class_decl = 
+          {main}    id stmt
+        | {base}    id var_decl* method*
+        | {sub}     id [extends]:id var_decl* method*;
+        
+    // For var_decls we need to know the var's type and name
+    
+    var_decl = type id;
+    
+    // Need to know the method's return type, its name, a list of
+    // arguments, and the list of stmts in its body.
+    
+    method = type id formal* var_decl* stmt*;
+    
+    formal = type id;
+    
+    // Most of the types are literals.  We only need extra info for
+    // the user-defined types -- the class name.
+    
+    type = {int} | {bool} | {int_array} | {user} id;
+    
+    // Most of these are pretty self explanatory.  Ids are variable or
+    // array names, stmts are the bodies of ifs and whiles, and exps
+    // are return values, tests, printed values, etc.
+        
+    stmt = {return} exp
+        | {block}   stmt*
+        | {if}      exp [yes]:stmt [no]:stmt
+        | {while}   exp stmt
+        | {print}   exp
+        | {asmt}    id exp
+        | {array_asmt} id [idx]:exp [val]:exp;
+         
+    // Lots and lots of expressions.
+         
+    exp = {and}     [left]:exp [right]:exp
+        | {lt}      [left]:exp [right]:exp
+        | {plus}    [left]:exp [right]:exp
+        | {minus}   [left]:exp [right]:exp
+        | {times}   [left]:exp [right]:exp
+        | {not}     exp
+        | {ref}     [name]:exp [idx]:exp        // name[idx]
+        | {length}  exp                         // exp.length()
+        | {method}  [obj]:exp id [args]:exp*    // obj.id(args)
+        | {num}     num
+        | {id}      id
+        | {true}    
+        | {false}   
+        | {this}    
+        | {alloc}   exp                         // new int[exp]
+        | {new}     id;                         // new id()
+        

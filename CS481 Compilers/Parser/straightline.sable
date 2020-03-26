@@ -1,0 +1,64 @@
+/**
+ * A simplified version of the straightline language from the
+ * book.  This doesn't allow sequenced expressions, and only
+ * supports the + operator.
+ *
+ *   Stm --> id := Exp MoreStms
+ *   Stm --> print ( ExpList ) MoreStms
+ *   MoreStms --> ; Stm
+ *   MoreStms -->
+ *   ExpList --> Exp ExpTail
+ *   ExpTail --> , Exp ExpTail
+ *   ExpTail -->
+ *   Exp --> id MoreExp
+ *   Exp --> num MoreExp
+ *   MoreExp --> + Exp
+ *   MoreExp -->
+ *
+ * Brad Richards, 2013.
+ */
+ 
+Package straightline;
+
+Helpers
+    digit = ['0'..'9'];
+    alpha = ['a'..'z'];
+    tab = 9;
+    cr = 13;
+    lf = 10;
+Tokens
+    asmt = ':=';
+    print = 'print';
+    lparen = '(';
+    rparen = ')';
+    plus = '+';
+    comma = ',';
+    semi = ';';
+    id = ['a'..'z']+;
+    num = digit+;
+    whitespace = (' ' | tab | cr | lf )+;
+Ignored Tokens
+    whitespace;
+
+Productions
+    stm =
+          {assign}  id asmt exp stms
+        | {print}   print lparen exp_list rparen stms;
+        
+    stms = 
+          {more}    semi stm
+        | {no};
+        
+    exp_list = exp exp_tail;
+    
+    exp_tail = 
+          {more}    comma exp exp_tail
+        | {no};
+        
+    exp = 
+          {id}  id exps
+        | {num} num exps;
+        
+    exps = 
+          {plus} plus exp
+        | {no};

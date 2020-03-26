@@ -1,0 +1,190 @@
+//Aaron Thompson & Lukas Jimenez-Smith
+Package minijava;
+
+Helpers
+    digit = ['0'..'9'];
+    alpha = ['a'..'z'] | ['A'..'Z'];
+    tab = 9;
+    cr = 13;
+    lf = 10;
+    allchar = [' '..'~'];       // All digits, letters, punctuation
+    eol = cr | lf;
+    white = ' ' | tab | eol;
+    not_star = [allchar - '*'] | white;
+    not_slash = [allchar - '/'] | white;
+    not_star_not_slash = [allchar - ['*'+'/']] | white;
+    
+Tokens
+    plus = '+';
+    minus = '-';
+    star = '*';
+    not = '!';
+    and = '&&';
+    lt = '<';
+    asmt = '=';
+    equals = '==';
+    comma = ',';
+    semi = ';';
+    dot = '.';
+    lparen = '(';
+    rparen = ')';
+    lbracket = '[';
+    rbracket = ']';
+    lbrace = '{';
+    rbrace = '}';
+    boolean = 'boolean';
+    clas = 'class';
+    else = 'else';
+    extends = 'extends';
+    false = 'false';
+    if = 'if';
+    int = 'int';
+    length = 'length';
+    main = 'main';
+    new = 'new';
+    public = 'public';
+    return = 'return';
+    static = 'static';
+    string = 'String';
+    print = 'System.out.println';
+    this = 'this';
+    true = 'true';
+    void = 'void';
+    while = 'while';
+    id = (alpha) ((alpha) | (digit) | '_')*;
+    num = (['1'..'9']digit*) | '0';
+    whitespace = white+;
+    block_comment = '/*' ((not_star* '/') | not_star_not_slash | ('*' not_slash))* '*/';
+    eol_comment = '//' (allchar | tab)* eol;  
+    
+Ignored Tokens
+    whitespace,
+    block_comment,
+    eol_comment;
+    
+    
+Productions
+
+    program = [main]:main_class [rest]:class_decl*;
+    
+    main_class = 
+        clas [cname]:id [ol]:lbrace public static void main lparen
+        string array [arg]:id rparen lbrace [body]:stmt rbrace [or]:rbrace;
+        
+    array = lbracket rbracket;
+    
+    class_decl =
+          {base_decl} base_decl         
+        | {extends_decl} extends_decl;   
+    
+    base_decl = 
+        clas [name]:id lbrace [vars]:var_decl* [methods]:method_decl* rbrace;
+            
+            
+    // YOU DO THIS ONE. It's similar to base_decl, but for classes that extend
+    // another class.
+    
+    extends_decl = 
+            clas [name]:id extends [name1]:id lbrace [vars]:var_decl* [methods]:method_decl* rbrace; 
+
+    
+    var_decl = [kind]:type [name]:id semi;
+    
+    // YOU DO THIS ONE. It should describe all four possible types in MiniJava:
+    // boolean, int, int array, and user-defined class as a type.
+    
+    type = 
+          {int}         [int0]:int
+        | {boolean}     boolean
+        | {intarray}    [int1]:int array
+        | {object}      new? id;
+    
+        
+    // Note that only the main method in the main class is void -- all
+    // other methods must have return values, and therefore must also
+    // have return statements.  (They are only allowed at the *end*.)
+        
+    method_decl = 
+        public [ret]:type [name]:id lparen [args]:formal_list? rparen
+            lbrace [vars]:var_decl* [stmts]:stmt* return [e]:exp semi rbrace;
+        
+    formal_list = [f]:formal [t]:formals_tail*;
+    
+    formals_tail =  comma [f]:formal;
+        
+    formal = [kind]:type [name]:id;
+    
+    stmt = 
+          {block}   [b]:block
+        | {if}      if lparen [test]:exp rparen [t]:stmt else [f]:stmt
+        | {while}   while lparen [test]:exp rparen [body]:stmt
+        | {print}   print lparen [e]:exp rparen semi
+        | {asmt}    [name]:id asmt [e]:exp semi
+        | {array_asmt} [name]:id lbracket [idx]:exp rbracket asmt [val]:exp semi;
+
+            
+    block = lbrace [s]:stmt* rbrace;
+    
+/* 
+    YOU DO ALL of the Expression grammar rules. Keep in mind that left
+    recursion is ok since SableCC does a flavor of LR parsing, but right
+    recursion should be avoided. Use a hierarchy of productions to get
+    precedence right, as we did in class. I'll save you the trouble of
+    consulting a Java reference for operator precedence levels:
+    
+        [] .        higher priority
+        !
+        *
+        +, -
+        <
+        &&         lower priority
+    
+	You should treat literals as highest priority. I'll let you figure out 
+	where to introduce (). Your expression rules should also cover calls
+	to value-returning methods -- that's why . is on the list of operators.
+	An expression involving . will be of the form obj.methodName(arg1, ...),
+	though you should also handle the special case of calling .length on an
+	array, in which case there are no args. (We'll treat that as a method 
+	call, even though it's officially referencing a static field.)
+*/
+    bool = {true} true 
+         | {false} false;
+
+    explist = {tail} exp comma [exps]:explist
+            | {head} exp
+            | {empty} ;
+
+    function = {dotop} bracdot dot id lparen explist rparen 
+             | {length} bracdot dot length;
+            
+    exp = {and} exp and lessthan
+        | {notand} lessthan;
+
+    lessthan = {lessthan} lessthan lt minusplus
+             | {notlessthan} minusplus;
+
+    minusplus = {minus} minusplus minus mult
+              | {plus} minusplus plus mult
+              | {minusplus} mult;
+
+    mult = {mult} mult star notexp
+         | {mult1} notexp;
+
+    notexp = {not} not notexp
+           | {not1} bracdot;
+   
+    bracdot = {literal} literal
+            | {this} this
+            | {arrayindex} bracdot lbracket exp rbracket
+            | {function} function
+            | {arraydecl} new int lbracket exp rbracket 
+            | {objectdecl} new id lparen explist rparen 
+            | {parens} parens;
+
+    parens = {parens} lparen exp rparen;
+
+    literal = {id} id
+            | {num} num
+            | {bool} bool;
+
+

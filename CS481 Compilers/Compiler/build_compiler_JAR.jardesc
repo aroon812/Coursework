@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="/Users/brichards/Documents/PugetSound/ Teaching/Classes/481/compiler.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/Compiler/build_compiler_JAR.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=Compiler/src&lt;{Compile.java[Compile" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="true">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <file path="/Compiler/README.md"/>
+        <file path="/Compiler/.project"/>
+        <file path="/Compiler/.gitignore"/>
+        <file path="/Compiler/.classpath"/>
+        <javaElement handleIdentifier="=Compiler/src"/>
+    </selectedElements>
+</jardesc>
