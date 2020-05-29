@@ -91,8 +91,7 @@ public class ClassInfo {
 	}
 
 	/**
-	 * Should print the class name, the class it extends if there is one, then
-	 * print the VarTable and MethodTable to display the names and their types.
+	 * 
 	 */
 	public void dump() {
 		System.out.println("-------------------------------------");
@@ -113,8 +112,29 @@ public class ClassInfo {
 	}
 
 	public void dumpIRT(boolean dot) {
+		System.out.println("-------------------------------------");
+		if (superClass == null) {
+			System.out.println("Class: " + className.getText());
+		} else {
+			System.out.println("Class: " + className.getText() + "  Extends: "
+					+ superClass.getText());
+		}
+		System.out.println("-------------------------------------");
+		System.out.println("Constructor fragment:");
+		if (dot) {
+			tree.PrintDot.printExp(info.getInit(new Reg("$dest")));
+		} else {
+			tree.Print.prExp(info.getInit(new Reg("$dest")), 4);
+		}
+		System.out.println("\n-------------------------------------");
 
-		//TODO Fill in the guts of this method -- but not until the IRT checkpoint.
-
+		if (vars != null) {
+			System.out.println("Instance var accessors:");
+			vars.dumpIRT(dot);
+		}
+		if (methods != null) {
+			methods.dumpIRT(dot);
+		}
+		System.out.println("\n");
 	}
 }

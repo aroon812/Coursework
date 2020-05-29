@@ -71,6 +71,19 @@ public class VarTable {
 	}
 
 	public void dumpIRT(boolean dot) {
-		//TODO Fill in the guts of this method
+		if (table == null) {
+			return;
+		}
+		tree.REG base = new tree.REG(new arch.Reg("$base"));
+		for (String name : table.keySet()) {
+			System.out.println("  " + name + " : " + table.get(name));
+			if (dot) {
+				tree.PrintDot.printExp(table.get(name).getAccess()
+						.getTree(base));
+			} else {
+				tree.Print.prExp(table.get(name).getAccess().getTree(base), 4);
+			}
+			System.out.println("\n");
+		}
 	}
 }

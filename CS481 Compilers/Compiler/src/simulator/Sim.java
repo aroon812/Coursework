@@ -349,6 +349,8 @@ public class Sim {
 			return left << right;
 		case BINOP.RSHIFT:
 			return left >> right;
+		case BINOP.SLT:
+			return (left < right ? 1 : 0);
 			// case BINOP.ARSHIFT: return left >> right;
 			// case BINOP.XOR: return left + right;
 		default:

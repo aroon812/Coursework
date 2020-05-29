@@ -3,7 +3,7 @@
 package minijava.node;
 
 import minijava.analysis.*;
-
+ 
 @SuppressWarnings("nls")
 public final class AAndExp extends PExp {
 	private PExp _left_;

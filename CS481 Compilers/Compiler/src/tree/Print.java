@@ -176,6 +176,9 @@ public class Print {
 		case BINOP.XOR:
 			say("XOR");
 			break;
+		case BINOP.SLT:
+			say("SLT");
+			break;
 		default:
 			throw new Error("Unknown OP in BINOP: " + e.binop);
 		}

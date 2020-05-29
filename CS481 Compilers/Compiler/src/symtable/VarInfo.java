@@ -21,7 +21,7 @@ public class VarInfo {
 
 	@Override
 	public String toString() {
-		return Types.toStr(type);
+		return Types.toString(type);
 	}
 
 	// ====================================================================

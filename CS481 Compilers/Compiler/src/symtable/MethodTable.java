@@ -77,6 +77,13 @@ public class MethodTable {
 	}
 
 	public void dumpIRT(boolean dot) {
-		//TODO: Fill in the guts of this method.
+		if (table == null) {
+			return;
+		}
+		for (String name : table.keySet()) {
+			System.out.print("\n" + name + " ");
+			table.get(name).dumpIRT(dot);
+		}
+
 	}
 }

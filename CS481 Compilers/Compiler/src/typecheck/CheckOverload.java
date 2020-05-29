@@ -1,10 +1,10 @@
-//Aaron Thompson & Lukas Jimenez-Smith
 package typecheck;
 
 import java.util.LinkedList;
-import java.util.ArrayList;
-import minijava.node.PFormal;
+import java.util.ListIterator;
+
 import minijava.node.AFormal;
+import minijava.node.PFormal;
 import minijava.node.TId;
 import symtable.ClassInfo;
 import symtable.ClassTable;
@@ -37,22 +37,21 @@ public class CheckOverload {
 		if (formals1.size() != formals2.size()) {
 			return false;
 		}
-
 		// Now we'll loop through the args and make sure the actuals match the
 		// type of the formals.
-
-		for (int i = 0; i < formals1.size(); i++){
-			AFormal af1 = (AFormal) formals1.get(i);
-			AFormal af2 = (AFormal) formals2.get(i);
-			boolean same = Types.sameType(af1.getType(), af2.getType());
-			if (!same){
+		ListIterator<PFormal> iter = formals2.listIterator(0);
+		for (PFormal arg1 : formals1) {
+			// If a pair of args differ, signatures don't match
+			if (!Types.sameType(((AFormal) arg1).getType(),
+					((AFormal) iter.next()).getType())) {
 				return false;
 			}
 		}
-
 		// If we survived the loop, args matched and signatures were same
 		return true;
 	}
+
+
 
 	/**
 	 * For each method in child, look for a method of the same name in parent.
@@ -82,25 +81,25 @@ public class CheckOverload {
 	 * superclasses (if there are any). This top-level method loops through each
 	 * class in the table, and pairs it up with each class in its inheritance
 	 * hierarchy. Call checkMethodOverloading for each pair to do the check.
-	 * @oparam table The symbol table
+	 * @param table The symbol table
 	 */
 	public static void checkAll(ClassTable table) throws Exception {
-		ClassInfo info, parent; 
-		ArrayList<String> inheritanceChain = new ArrayList<String>(); 
+		TId superClass;
+		ClassInfo info, parent;
+		for (String name : table.getClassNames()) {
+			info = table.get(name); // info record for a class
 
-		for (String name : table.getClassNames()) { 
-			info = table.get(name); 
-			parent = info; 
+			// Traverse inheritance chain, looking for clashes. See if we
+			// clash with parent, then with grandparent, etc.
 
-			while (null != parent && null != parent.getSuper()){
-				String parentName = parent.getSuper().getText(); 
-				inheritanceChain.add(parentName); 
-				parent = table.get(parentName); 		
-			}
-
-			for (String iName : inheritanceChain){ 
-				ClassInfo iInfo = table.get(iName); 
-				checkMethodOverloading(info, iInfo);			
+			superClass = info.getSuper(); // Start with TId of parent
+			while (superClass != null) { // if superclass exists...
+				parent = table.get(superClass.getText()); // Dig up super's info
+				if (parent == null) {
+					break;
+				}
+				checkMethodOverloading(info, parent); // see if there's a clash
+				superClass = parent.getSuper(); // find super's parent, repeat
 			}
 		}
 	}

@@ -45,9 +45,24 @@ public class ClassIRTinfo {
 	 * @param dest The register that should hold the object reference
 	 * @return The IRT for this class's constuctor
 	 */
-	//public Exp getInit(Reg dest) {
-		// TODO: Finish this method
-	//}
+	public Exp getInit(Reg dest) {
+		Stm tempTree;
+		if (words == 0) {
+			return new ESEQ(new MOVE(new REG(dest), new CONST(0)),
+					new REG(dest));
+		}
+		else {
+			tempTree = new MOVE(new REG(dest), 
+					new CALL(new NAME(new Label("malloc")), 
+							new ExpList(new CONST(words * 4), null)));
+
+			for (int i = 0; i < words; i++) {
+				tempTree = new SEQ(tempTree, new MOVE(new MEM(new BINOP(BINOP.PLUS,
+						new REG(dest), new CONST(i * 4))), new CONST(0)));
+			}
+			return new ESEQ(tempTree, new REG(dest));
+		}
+	}
 
 	/**
 	 * Returns the number of 
@@ -56,12 +71,10 @@ public class ClassIRTinfo {
 	public int getWords() {
 		return words;
 	}
-/*
+
 	public static void test(int n) {
 		symtable.ClassIRTinfo i = new symtable.ClassIRTinfo(n);
 		tree.Print.prExp(i.getInit(new Reg()));
 		tree.PrintDot.printExp(i.getInit(new Reg()));
 	}
-}
-*/
 }

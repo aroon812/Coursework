@@ -92,10 +92,10 @@ public class MethodInfo {
 			for (PFormal pf : formals) {
 				AFormal arg = (AFormal) pf;
 				System.out.print(arg.getId().getText() + ":"
-						+ Types.toStr(arg.getType()) + " ");
+						+ Types.toString(arg.getType()) + " ");
 			}
 		}
-		System.out.println(") : " + Types.toStr(retType));
+		System.out.println(") : " + Types.toString(retType));
 		if (locals != null) {
 			locals.dump();
 		}
@@ -108,6 +108,18 @@ public class MethodInfo {
 	 * @param dot True if we want output that could be fed to the dot utility.
 	 */
 	public void dumpIRT(boolean dot) {
-		//TODO: Fill in the guts of this method.
+		System.out.print("( ");
+		if (formals != null) {
+			for (PFormal pf : formals) {
+				AFormal arg = (AFormal) pf;
+				System.out.print(arg.getId().getText() + ":"
+						+ Types.toString(arg.getType()) + " ");
+			}
+		}
+		System.out.println(") : " + Types.toString(retType));
+		System.out.println("Accessors for parameters and locals:");
+		if (locals != null) {
+			locals.dumpIRT(dot);
+		}
 	}
 }

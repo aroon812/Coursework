@@ -198,6 +198,9 @@ public class PrintDot {
 		case BINOP.XOR:
 			kind = "XOR";
 			break;
+		case BINOP.SLT:
+			kind = "SLT";
+			break;
 		default:
 			throw new Error("Unknown OP in BINOP: " + e.binop);
 		}

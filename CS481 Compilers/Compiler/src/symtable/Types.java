@@ -12,11 +12,9 @@ public class Types {
 	public static final String INTARRAY = "int[]";
 
 	/**
-	 * Converts a type descriptor from our AST to its string representation.
-	 * @param type  A PType node from the AST
-	 * @return  The corresponding type string
+	 * Returns a String representing the input type.
 	 */
-	public static String toStr(PType type) {
+	public static String toString(PType type) {
 		if (type instanceof ABoolType) {
 			return BOOL;
 		} else if (type instanceof AIntType) {
@@ -29,16 +27,11 @@ public class Types {
 			return "unknown";
 		}
 	}
- 
+
 	/**
-	 * Returns true if the two type descriptors have the same type.  It
-	 * converts both to their string representations and compares the
-	 * two strings.
-	 * @param t1  The first type descriptor
-	 * @param t2  The second type descriptor
-	 * @return  True if the types are the same, false otherwise.
+	 * Two types are the same if they produce the same String as output.
 	 */
 	public static boolean sameType(PType t1, PType t2) {
-		return (toStr(t1).equals(toStr(t2)));
+		return (toString(t1).equals(toString(t2)));
 	}
 }

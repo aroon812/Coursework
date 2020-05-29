@@ -16,7 +16,8 @@ public class BINOP extends Exp {
 	}
 
 	public final static int PLUS = 0, MINUS = 1, MUL = 2, DIV = 3, AND = 4,
-			OR = 5, LSHIFT = 6, RSHIFT = 7, ARSHIFT = 8, XOR = 9;
+			OR = 5, LSHIFT = 6, RSHIFT = 7, ARSHIFT = 8, XOR = 9,
+			SLT = 10;	// Added in 2020
 
 	@Override
 	public ExpList kids() {
